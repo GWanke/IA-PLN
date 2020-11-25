@@ -14,9 +14,9 @@ stopwords = sp.Defaults.stop_words
 
 def readInput():
 	#panda dataframe
-	entrada = pd.read_csv('IMDB Dataset.csv') ## separa por linha(da pra pegar o propriedades das palavras por um indice []).
+	entrada = pd.read_csv('IMDB Dataset.csv')
 	#passa a entrada para uma serie, para o preprocessamento.
-	entrada=entrada['review'].head().apply(preProcessamento)
+	entrada=entrada['review'].apply(preProcessamento)
 	print(entrada.head())
 
 def preProcessamento(linha):
