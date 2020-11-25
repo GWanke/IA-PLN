@@ -1,0 +1,5 @@
+bs4
+unidecode
+numpy
+pandas
+spacy
