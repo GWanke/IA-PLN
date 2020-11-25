@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 import unidecode
 import pandas as pd
 import time
-from nltk.stem import PorterStemmer
+#modulo do Stemmer. Utiliza o Snowball Stemmer, com um wrap em C para melhorar o desempenho.
+import Stemmer
 #import para a lista de stopwords do spacy
 import spacy
 #lista global de stopwords -- MEXER DEPOIS NELA, PARA ALTERAR OS STOPWORDS SENTIMENTAIS.
@@ -29,8 +30,8 @@ def preProcessamento(linha):
 	#tira os pontos, transforma em minuscula
 	linha = re.sub('[^a-z\s]', '', linha.lower())
 	#stemming + tokenizer + Retira os stopWords.
-	ps = PorterStemmer()
-	linha = [ps.stem(palavra) for palavra in linha.split() if palavra not in stopwords]
+	ps = Stemmer.Stemmer('english')
+	linha = [ps.stemWord(palavra) for palavra in linha.split() if palavra not in stopwords]
 	#adiciona no dataframe.
 	return ','.join(linha)  
 

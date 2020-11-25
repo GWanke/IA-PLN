@@ -3,4 +3,4 @@ unidecode
 numpy
 pandas
 spacy
-nltk
+PyStemmer
