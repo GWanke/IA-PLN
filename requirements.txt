@@ -4,3 +4,4 @@ numpy
 pandas
 spacy
 PyStemmer
+scikit-learn

@@ -9,6 +9,7 @@ import time
 #modulo do Stemmer. Utiliza o Snowball Stemmer, com um wrap em C para melhorar o desempenho.
 import Stemmer
 #import para a lista de stopwords do spacy
+from sklearn.feature_extraction.text import CountVectorizer
 import spacy
 #lista global de stopwords -- MEXER DEPOIS NELA, PARA ALTERAR OS STOPWORDS SENTIMENTAIS.
 sp = spacy.load('en_core_web_sm')
@@ -34,19 +35,21 @@ def preProcessamento(linha):
 	ps = Stemmer.Stemmer('english')
 	linha = [ps.stemWord(palavra) for palavra in linha.split() if palavra not in stopwords]
 	#adiciona no dataframe.
-	return ','.join(linha)
+	return ' '.join(linha)
 
 def BagofWords(dataframe):
 	colunaReview = dataframe['review'].astype(str)
-	#bagofWords
-	bow=pd.Series([y for x in colunaReview.values.flatten() for y in x.split(',')]).value_counts()
+	#inputs do vect. Da para mudar o ngram_range, mas a complexidade aumenta.
+	vect=CountVectorizer(binary=False,ngram_range=(1,1))
+	#vetoriza a coluna
+	bow = vect.fit_transform(colunaReview)
+	#print(bow.shape)
 	return bow
 
 def main():
 	start = time.time()
 	entrada=readInput()
 	bow = BagofWords(entrada)
-	print(bow)
 	end = time.time()
 	print(end-start)
 if __name__ == '__main__':
