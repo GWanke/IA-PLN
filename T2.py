@@ -19,7 +19,8 @@ def readInput():
 	entrada = pd.read_csv('IMDB Dataset.csv')
 	#passa a entrada para uma serie, para o preprocessamento.
 	entrada['review'] = entrada['review'].apply(preProcessamento)
-	print(entrada.head(10))
+	return entrada
+
 
 def preProcessamento(linha):
 	#tira o HTML.
@@ -33,13 +34,19 @@ def preProcessamento(linha):
 	ps = Stemmer.Stemmer('english')
 	linha = [ps.stemWord(palavra) for palavra in linha.split() if palavra not in stopwords]
 	#adiciona no dataframe.
-	return ','.join(linha)  
+	return ','.join(linha)
+
+def BagofWords(dataframe):
+	colunaReview = dataframe['review'].astype(str)
+	#bagofWords
+	bow=pd.Series([y for x in colunaReview.values.flatten() for y in x.split(',')]).value_counts()
+	return bow
 
 def main():
-	if 'like' in stopwords:
-		print('ye')
 	start = time.time()
-	readInput()
+	entrada=readInput()
+	bow = BagofWords(entrada)
+	print(bow)
 	end = time.time()
 	print(end-start)
 if __name__ == '__main__':
