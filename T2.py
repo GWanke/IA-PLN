@@ -1,4 +1,4 @@
-#modulo para o regex
+	#modulo para o regex
 import re
 #modulo para o html parser
 from bs4 import BeautifulSoup
@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import unidecode
 import pandas as pd
 import time
-#import para a lista de stopords do spicy
+#import para a lista de stopwords do spacy
 import spacy
 #lista global de stopwords -- MEXER DEPOIS NELA, PARA ALTERAR OS STOPWORDS SENTIMENTAIS.
 sp = spacy.load('en_core_web_sm')
@@ -28,11 +28,14 @@ def preProcessamento(linha):
 	#tira os pontos, transforma em minuscula
 	linha = re.sub('[^a-z\s]', '', linha.lower())
 	#separa em tokens. E possivel utilizar split pois foi usado um regex para tirar os pontos anteriormente. Alem disto, retira os stopWords.
-	linha = [palavra for palavra in linha.split() if palavra not in set(stopwords)]
+	linha = [palavra for palavra in linha.split() if palavra not in stopwords]
 	#adiciona no dataframe.
 	return ','.join(linha)  
 
 def main():
+	start = time.time()
 	readInput()
+	end = time.time()
+	print(end-start)
 if __name__ == '__main__':
     main()
