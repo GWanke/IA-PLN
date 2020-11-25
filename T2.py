@@ -29,8 +29,6 @@ def preProcessamento(linha):
 	linha = re.sub('[^a-z\s]', '', linha.lower())
 	#separa em tokens. E possivel utilizar split pois foi usado um regex para tirar os pontos anteriormente. Alem disto, retira os stopWords.
 	linha = [palavra for palavra in linha.split() if palavra not in set(stopwords)]
-	
-	#linha = [w for w in linha.split() if w not in set(stopwords)]
 	#adiciona no dataframe.
 	return ','.join(linha)  
 
