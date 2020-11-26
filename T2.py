@@ -43,8 +43,8 @@ def preProcessamento(linha):
 
 def Vectorizer(treino,teste):
 	#Vectorizers. Da para mudar o ngram_range, mas a complexidade aumenta. 
-	vectBow = CountVectorizer(binary=False,min_df=2,ngram_range=(1,1))
-	vectTfidf = TfidfVectorizer(use_idf=True,min_df=2,ngram_range=(1,1))
+	vectBow = CountVectorizer(binary=False,min_df=2,ngram_range=(1,2))
+	vectTfidf = TfidfVectorizer(use_idf=True,min_df=2,ngram_range=(1,2))
 	#Aplica o vector no dataframe, resultando em um Bag of Words.
 	bowX = vectBow.fit_transform(treino)
 	bowY = vectBow.transform(teste)
@@ -58,15 +58,13 @@ def Vectorizer(treino,teste):
 
 
 def TreinoModel(Xtreino,Xteste,Ytreino,Yteste):
+	print(Xtreino)
 	MNB = MultinomialNB()
 	#treinando o model
 	modelo = MNB.fit(Xtreino, Ytreino)
 	resTreino = modelo.predict(Xtreino)
-	resTeste = modelo.predict(Xteste)
-
 	print('Train Accuracy:', accuracy_score(Ytreino, resTreino))
-	print('Test Accuracy:', accuracy_score(Yteste, resTeste))
-
+	return resTreino
 
 def main():	
 	start = time.time()
