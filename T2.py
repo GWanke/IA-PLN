@@ -10,6 +10,7 @@ import time
 import Stemmer
 #import para a lista de stopwords do spacy
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import spacy
 #lista global de stopwords -- MEXER DEPOIS NELA, PARA ALTERAR OS STOPWORDS SENTIMENTAIS.
 sp = spacy.load('en_core_web_sm')
@@ -37,19 +38,21 @@ def preProcessamento(linha):
 	#adiciona no dataframe.
 	return ' '.join(linha)
 
-def BagofWords(dataframe):
+def Model(dataframe):
 	colunaReview = dataframe['review'].astype(str)
-	#inputs do vect. Da para mudar o ngram_range, mas a complexidade aumenta.
-	vect=CountVectorizer(binary=False,ngram_range=(1,1))
-	#vetoriza a coluna
-	bow = vect.fit_transform(colunaReview)
+	#inputs dos vects. Da para mudar o ngram_range, mas a complexidade aumenta.
+	vectBow=CountVectorizer(binary=False,ngram_range=(1,1))
+	vectTfidf=TfidfVectorizer(use_idf=True,ngram_range=(1,1))
+	#vetoriza a coluna - Bag of word e tfidf
+	bow = vectBow.fit_transform(colunaReview)
+	tfidf = vectTfidf.fit_transform(colunaReview)
 	#print(bow.shape)
-	return bow
+	return bow,tfidf
 
 def main():
 	start = time.time()
 	entrada=readInput()
-	bow = BagofWords(entrada)
+	Matbow, MatTFIDF = Model(entrada)
 	end = time.time()
 	print(end-start)
 if __name__ == '__main__':
