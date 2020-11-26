@@ -58,10 +58,9 @@ def Vectorizer(treino,teste):
 
 
 def TreinoModel(Xtreino,Xteste,Ytreino,Yteste):
-	print(Xtreino)
 	MNB = MultinomialNB()
-	#treinando o model
-	modelo = MNB.fit(Xtreino, Ytreino)
+	#treinando o model com base nos parametros de teste.
+	modelo = MNB.fit(Xteste, Yteste)
 	resTreino = modelo.predict(Xtreino)
 	print('Train Accuracy:', accuracy_score(Ytreino, resTreino))
 	return resTreino
@@ -74,7 +73,7 @@ def main():
 	#Equivale as variaveis para o MNB.
 	y = entrada['sentiment']
 	#split das entradas. Conjunto de treino = 0.8%.
-	x_treino, x_teste , y_treino, y_teste = train_test_split(x,y,test_size = 0.2)
+	x_treino, x_teste , y_treino, y_teste = train_test_split(x,y,test_size = 0.3)
 	#vetorizando - preparando para aplicar o modelo MNB
 	bowX,bowY,tfidfX,tfidfY = Vectorizer(x_treino,x_teste)
 	#da pra variar os parametros do metodo para variar a forma de vetorizacao(bow ou tfidf)
