@@ -12,7 +12,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix
 #import para a lista de stopwords do spacy
 import spacy
 #lista global de stopwords -- MEXER DEPOIS NELA, PARA ALTERAR OS STOPWORDS SENTIMENTAIS.
@@ -62,7 +63,16 @@ def TreinoModel(Xtreino,Xteste,Ytreino,Yteste):
 	#treinando o model com base nos parametros de teste.
 	modelo = MNB.fit(Xteste, Yteste)
 	resTreino = modelo.predict(Xtreino)
-	print('Train Accuracy:', accuracy_score(Ytreino, resTreino))
+	print('Acc micro:', f1_score(Ytreino, resTreino, average='micro'))
+	print('Acc macro:', f1_score(Ytreino, resTreino, average='macro'))
+	print('Acc binario:', f1_score(Ytreino, resTreino, average='binary'))
+	cmat = confusion_matrix(Ytreino, resTreino)
+	tn, fp, fn, tp = cmat.ravel()
+	print(cmat)
+	print('TrueNegative: ',tn)
+	print('FalseNegative: ',fn)
+	print('TruePositive: ',tp)
+	print('FalsePositive: ',fp)
 	return resTreino
 
 def main():	
@@ -73,7 +83,7 @@ def main():
 	#Equivale as variaveis para o MNB.
 	y = entrada['sentiment']
 	#split das entradas. Conjunto de treino = 0.8%.
-	x_treino, x_teste , y_treino, y_teste = train_test_split(x,y,test_size = 0.3)
+	x_treino, x_teste , y_treino, y_teste = train_test_split(x,y,test_size = 0.25)
 	#vetorizando - preparando para aplicar o modelo MNB
 	bowX,bowY,tfidfX,tfidfY = Vectorizer(x_treino,x_teste)
 	#da pra variar os parametros do metodo para variar a forma de vetorizacao(bow ou tfidf)
